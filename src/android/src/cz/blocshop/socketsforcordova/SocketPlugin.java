@@ -188,7 +188,7 @@ public class SocketPlugin extends CordovaPlugin {
     }
 
     private void dispatchEvent(JSONObject jsonEventObject) {
-        this.webView.sendJavascript(String.format("window.Socket.dispatchEvent(%s);", jsonEventObject.toString()));
+        this.webView.sendJavascript(String.format("window.document.dispatchEvent(new CustomEvent('SOCKET_EVENT', {detail: %s}));", jsonEventObject.toString()));
     }
 
     private class CloseEventHandler implements Consumer<Boolean> {

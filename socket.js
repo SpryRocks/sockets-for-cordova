@@ -55,7 +55,7 @@ Socket.prototype.open = function (host, port, success, error) {
 
     function socketEventHandler(event) {
 
-        var payload = event.payload;
+        var payload = event.detail || event.payload;
 
         if (payload.socketKey !== _that.socketKey) {
             return;
