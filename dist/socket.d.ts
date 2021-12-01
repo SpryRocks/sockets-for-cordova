@@ -12,6 +12,7 @@ declare class Socket {
     close(success: any, error: any): void;
     get state(): number;
     _ensureState(requiredState: any, errorCallback: any): boolean;
+    setOptions(options: any, success: any, error: any): void;
 }
 declare namespace Socket {
     namespace State {
