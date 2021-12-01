@@ -147,22 +147,28 @@ public class SocketPlugin extends CordovaPlugin {
     }
 
     private void setOptions(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
-        String socketKey = args.getString(0);
-        JSONObject optionsJSON = args.getJSONObject(1);
+        try {
+                String socketKey = args.getString(0);
+                JSONObject optionsJSON = args.getJSONObject(1);
 
-        SocketAdapter socket = this.getSocketAdapter(socketKey);
-        if (socket != null) {
-            SocketAdapterOptions options = new SocketAdapterOptions();
-            options.setKeepAlive(getBooleanPropertyFromJSON(optionsJSON, "keepAlive"));
-            options.setOobInline(getBooleanPropertyFromJSON(optionsJSON, "oobInline"));
-            options.setReceiveBufferSize(getIntegerPropertyFromJSON(optionsJSON, "receiveBufferSize"));
-            options.setSendBufferSize(getIntegerPropertyFromJSON(optionsJSON, "sendBufferSize"));
-            options.setSoLinger(getIntegerPropertyFromJSON(optionsJSON, "soLinger"));
-            options.setSoTimeout(getIntegerPropertyFromJSON(optionsJSON, "soTimeout"));
-            options.setTrafficClass(getIntegerPropertyFromJSON(optionsJSON, "trafficClass"));
-        }
+                SocketAdapter socket = this.getSocketAdapter(socketKey);
+                if (socket != null) {
+                  SocketAdapterOptions options = new SocketAdapterOptions();
+                  options.setKeepAlive(getBooleanPropertyFromJSON(optionsJSON, "keepAlive"));
+                  options.setOobInline(getBooleanPropertyFromJSON(optionsJSON, "oobInline"));
+                  options.setReceiveBufferSize(getIntegerPropertyFromJSON(optionsJSON, "receiveBufferSize"));
+                  options.setSendBufferSize(getIntegerPropertyFromJSON(optionsJSON, "sendBufferSize"));
+                  options.setSoLinger(getIntegerPropertyFromJSON(optionsJSON, "soLinger"));
+                  options.setSoTimeout(getIntegerPropertyFromJSON(optionsJSON, "soTimeout"));
+                  options.setTrafficClass(getIntegerPropertyFromJSON(optionsJSON, "trafficClass"));
 
-        callbackContext.success();
+                  socket.setOptions(options);
+                }
+
+                callbackContext.success();
+              } catch (SocketException e) {
+                callbackContext.error(e.toString());
+              }
     }
 
     private Boolean getBooleanPropertyFromJSON(JSONObject jsonObject, String propertyName) throws JSONException {
