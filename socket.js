@@ -187,6 +187,20 @@ Socket.prototype._ensureState = function (requiredState, errorCallback) {
     }
 };
 
+Socket.prototype.setOptions = function (options, success, error) {
+    if (!this._ensureState(Socket.State.OPENED, error)) {
+        return;
+    }
+
+    cordova.exec(
+        success,
+        error,
+        CORDOVA_SERVICE_NAME,
+        "setOptions",
+        [this.socketKey, options],
+    );
+}
+
 Socket.dispatchEvent = function (event) {
     var eventReceive = document.createEvent('Events');
     eventReceive.initEvent(SOCKET_EVENT, true, true);
