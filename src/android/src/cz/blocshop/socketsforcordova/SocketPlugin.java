@@ -146,7 +146,6 @@ public class SocketPlugin extends CordovaPlugin {
     }
 
     private void setOptions(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
-
         String socketKey = args.getString(0);
         JSONObject optionsJSON = args.getJSONObject(1);
 
@@ -160,14 +159,9 @@ public class SocketPlugin extends CordovaPlugin {
             options.setSoLinger(getIntegerPropertyFromJSON(optionsJSON, "soLinger"));
             options.setSoTimeout(getIntegerPropertyFromJSON(optionsJSON, "soTimeout"));
             options.setTrafficClass(getIntegerPropertyFromJSON(optionsJSON, "trafficClass"));
-
-            try {
-                socket.close();
-                callbackContext.success();
-            } catch (IOException e) {
-                callbackContext.error(e.toString());
-            }
         }
+
+        callbackContext.success();
     }
 
     private Boolean getBooleanPropertyFromJSON(JSONObject jsonObject, String propertyName) throws JSONException {
