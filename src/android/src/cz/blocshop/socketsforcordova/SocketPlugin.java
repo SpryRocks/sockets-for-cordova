@@ -18,6 +18,7 @@
 package cz.blocshop.socketsforcordova;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
