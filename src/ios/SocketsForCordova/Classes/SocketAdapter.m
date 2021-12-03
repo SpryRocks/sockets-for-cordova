@@ -37,9 +37,13 @@ int const WRITE_BUFFER_SIZE = 10 * 1024;
 int openTimeoutSeconds = 5.0;
 int writeTimeoutSeconds = 5.0;
 
+dispatch_queue_t write_queue;
+
 @implementation SocketAdapter
 
 - (void)open:(NSString *)host port:(NSNumber*)port {
+
+    write_queue = dispatch_queue_create("socket_write_queue", DISPATCH_QUEUE_SERIAL);
 
     CFReadStreamRef readStream2;
     CFWriteStreamRef writeStream2;
@@ -237,17 +241,19 @@ int writeTimeoutSeconds = 5.0;
 }
 
 - (void)write:(NSArray *)dataArray {
-    int numberOfBatches = ceil((float)dataArray.count / (float)WRITE_BUFFER_SIZE);
-    for (int i = 0; i < (numberOfBatches - 1); i++) {
-        [self writeSubarray:dataArray offset:i * WRITE_BUFFER_SIZE length:WRITE_BUFFER_SIZE];
-    }
-    int lastBatchPosition = (numberOfBatches - 1) * WRITE_BUFFER_SIZE;
+    dispatch_sync(write_queue, ^{
+        int numberOfBatches = ceil((float)dataArray.count / (float)WRITE_BUFFER_SIZE);
+        for (int i = 0; i < (numberOfBatches - 1); i++) {
+            [self writeSubarray:dataArray offset:i * WRITE_BUFFER_SIZE length:WRITE_BUFFER_SIZE];
+        }
+        int lastBatchPosition = (numberOfBatches - 1) * WRITE_BUFFER_SIZE;
 
-    NSTimer *timer = [NSTimer timerWithTimeInterval:writeTimeoutSeconds target:self selector:@selector(onWriteTimeout:) userInfo:nil repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-    writeTimer = timer;
+        NSTimer *timer = [NSTimer timerWithTimeInterval:writeTimeoutSeconds target:self selector:@selector(onWriteTimeout:) userInfo:nil repeats:NO];
+        [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+        writeTimer = timer;
 
-    [self writeSubarray:dataArray offset:lastBatchPosition length:(dataArray.count - lastBatchPosition)];
+        [self writeSubarray:dataArray offset:lastBatchPosition length:(dataArray.count - lastBatchPosition)];
+    });
 }
 
 - (void)writeSubarray:(NSArray *)dataArray offset:(long)offset length:(long)length {
