@@ -41,7 +41,7 @@
     NSString *existsPortSocketKey = [self->socketAdaptersPorts objectForKey:port];
     if(existsPortSocketKey != nil){
         NSLog(@"[NATIVE] OLD socket exists for port: %@", port);
-        [self closeSocketInstance:existsPortSocketKey];
+//         [self closeSocketInstance:existsPortSocketKey];
     }
 
     __block SocketAdapter* socketAdapter = [[SocketAdapter alloc] init];

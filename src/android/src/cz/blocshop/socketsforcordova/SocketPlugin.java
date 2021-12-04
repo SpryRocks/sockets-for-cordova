@@ -79,7 +79,7 @@ public class SocketPlugin extends CordovaPlugin {
             SocketAdapter existsSocket = this.getSocketAdapter(existsSocketKey);
             try {
                 if (existsSocket != null) {
-                    existsSocket.close();
+//                     existsSocket.close();
                     Log.d("SocketPlugin", "Old socket exists. Closing.");
                 } else {
                     Log.d("SocketPlugin", "Old socket not exists.");
