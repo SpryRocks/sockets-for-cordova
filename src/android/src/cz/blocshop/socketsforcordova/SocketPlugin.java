@@ -74,20 +74,20 @@ public class SocketPlugin extends CordovaPlugin {
         socketAdapter.setOpenEventHandler(new OpenEventHandler(socketKey, socketAdapter, callbackContext));
 
         String portString = String.valueOf(port);
-        if (this.socketAdaptersPorts.containsKey(portString)) {
-            String existsSocketKey = this.socketAdaptersPorts.get(portString);
-            SocketAdapter existsSocket = this.getSocketAdapter(existsSocketKey);
-            try {
-                if (existsSocket != null) {
+//         if (this.socketAdaptersPorts.containsKey(portString)) {
+//             String existsSocketKey = this.socketAdaptersPorts.get(portString);
+//             SocketAdapter existsSocket = this.getSocketAdapter(existsSocketKey);
+//             try {
+//                 if (existsSocket != null) {
 //                     existsSocket.close();
-                    Log.d("SocketPlugin", "Old socket exists. Closing.");
-                } else {
-                    Log.d("SocketPlugin", "Old socket not exists.");
-                }
-            } catch (IOException e) {
-                Log.d("SocketPlugin", "Old socket closing error: " + e.getMessage());
-            }
-        }
+//                     Log.d("SocketPlugin", "Old socket exists. Closing.");
+//                 } else {
+//                     Log.d("SocketPlugin", "Old socket not exists.");
+//                 }
+//             } catch (IOException e) {
+//                 Log.d("SocketPlugin", "Old socket closing error: " + e.getMessage());
+//             }
+//         }
 
         socketAdapters.put(socketKey, socketAdapter);
         socketAdaptersPorts.put(portString, socketKey);
