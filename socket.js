@@ -193,7 +193,7 @@ Socket.prototype.setOptions = function (options, success, error) {
         error,
         CORDOVA_SERVICE_NAME,
         "setOptions",
-        [this.socketKey, options],
+        [this.socketKey, options]
     );
 }
 
