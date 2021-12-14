@@ -21,15 +21,6 @@
 #include <math.h>
 #import "SocketAdapter.h"
 
-CFReadStreamRef readStream;
-CFWriteStreamRef writeStream;
-
-NSInputStream *inputStream;
-NSOutputStream *outputStream;
-
-NSTimer *openTimer;
-NSTimer *writeTimer;
-
 BOOL wasOpenned = FALSE;
 
 int const WRITE_BUFFER_SIZE = 10 * 1024;
@@ -37,9 +28,9 @@ int const WRITE_BUFFER_SIZE = 10 * 1024;
 int openTimeoutSeconds = 5.0;
 int writeTimeoutSeconds = 5.0;
 
-dispatch_queue_t write_queue;
-
 @implementation SocketAdapter
+
+    dispatch_queue_t write_queue;
 
 - (void)open:(NSString *)host port:(NSNumber*)port {
 
