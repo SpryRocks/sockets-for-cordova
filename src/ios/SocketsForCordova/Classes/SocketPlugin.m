@@ -23,7 +23,7 @@
 @implementation SocketPlugin : CDVPlugin
 
 - (void) open : (CDVInvokedUrlCommand*) command {
-    
+
     NSString *socketKey = [command.arguments objectAtIndex:0];
     NSString *host = [command.arguments objectAtIndex:1];
     NSNumber *port = [command.arguments objectAtIndex:2];
@@ -39,10 +39,10 @@
     }
 
     NSString *existsPortSocketKey = [self->socketAdaptersPorts objectForKey:port];
-    if(existsPortSocketKey != nil){
-        NSLog(@"[NATIVE] OLD socket exists for port: %@", port);
-        [self closeSocketInstance:existsPortSocketKey];
-    }
+//     if(existsPortSocketKey != nil){
+//         NSLog(@"[NATIVE] OLD socket exists for port: %@", port);
+//         [self closeSocketInstance:existsPortSocketKey];
+//     }
 
     __block SocketAdapter* socketAdapter = [[SocketAdapter alloc] init];
     socketAdapter.openEventHandler = ^ void () {
@@ -225,7 +225,7 @@
 }
 
 - (void) dispatchEvent: (NSString *) jsonEventString {
-    NSString *jsToEval = [NSString stringWithFormat : @"window.Socket.dispatchEvent(%@);", jsonEventString];
+    NSString *jsToEval = [NSString stringWithFormat : @"window.document.dispatchEvent(new CustomEvent('SOCKET_EVENT', {detail: %@}));", jsonEventString];
     [self.commandDelegate evalJs:jsToEval];
 }
 
